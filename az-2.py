@@ -28,24 +28,27 @@ def shows():
     for bbb in categories:
         print(bb)
 
-
-a = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="behnam"
-    )
-b = a.cursor()
-sql = "CREATE DATABASE sss"
-b.execute(sql)
-
-a = mysql.connector.connect(
-      host="localhost",
-      user="root",
-      password="behnam",
-      database="sss"
-    )
-b = a.cursor()
-
+try:
+    a = mysql.connector.connect(
+          host="localhost",
+          user="root",
+          password="behnam"
+        )
+    b = a.cursor()
+    sql = "CREATE DATABASE sss"
+    b.execute(sql)
+except:
+    pass
+try:
+    a = mysql.connector.connect(
+          host="localhost",
+          user="root",
+          password="behnam",
+          database="sss"
+        )
+    b = a.cursor()
+except:
+    pass
 
 list_not_reapeat_c=[]
 list_not_reapeat_a=[]
@@ -53,8 +56,11 @@ list_not_reapeat_ti=[]
 list_not_reapeat_u=[]
 list_not_reapeat_ta=[]
 #print(a.database)
-
-isorepublics()
+try:
+    isorepublics()
+except:
+    pass
+    
 '''
 b.execute("SHOW TABLES")
 
@@ -79,12 +85,22 @@ for i in file:
               
     except:
         pass
-5
+
 
 for oo in range(len(list_not_reapeat_c)):
     add(list_not_reapeat_c[oo],list_not_reapeat_a[oo],list_not_reapeat_ti[oo],list_not_reapeat_u[oo],"TAG")
-    
+    with open("templates/Table2.html","a") as ap:
+        ap.write(f"""
+        {list_not_reapeat_ti[oo]}
+	<img src="{list_not_reapeat_u[oo]}" width="600" height="600">
+	<p><strong>author = {list_not_reapeat_a[oo]}</strong></p>
+	<p><strong>category ={list_not_reapeat_c[oo]}<strong></p>
+	<section>
+      {list_not_reapeat_ta[oo]}
+                    """)
 
+with open("templates/Table2.html","a") as ap:
+    ap.write("</body></html>")
 
 a = pd.read_csv("inform.csv")
  
@@ -104,7 +120,7 @@ app=Flask(__name__)
 @app.route('/')
 
 def index():
-    return render_template('Table.html')
+    return render_template('Table2.html')
 
 if __name__ =='__main__': 
     app.run(debug=True)
