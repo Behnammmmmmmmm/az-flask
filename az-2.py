@@ -4,6 +4,20 @@ import mysql.connector
 from bs4 import BeautifulSoup
 import csv
 
+def write_to_html(c_list, a_list, ti_list, u_list, ta_list):
+    with open("templates/Table2.html", "a") as ap:
+        for oo in range(len(c_list)):
+            add(c_list[oo], a_list[oo], ti_list[oo], u_list[oo], "TAG")
+
+            ap.write(f"""
+            {ti_list[oo]}
+            <img src="{u_list[oo]}" width="600" height="600">
+            <p><strong>author = {a_list[oo]}</strong></p>
+            <p><strong>category ={c_list[oo]}<strong></p>
+            <section>
+                {ta_list[oo]}
+            """)
+            
 def isorepublics():
     sql = """
         CREATE TABLE isorepublic(
@@ -86,18 +100,7 @@ for i in file:
     except:
         pass
 
-
-for oo in range(len(list_not_reapeat_c)):
-    add(list_not_reapeat_c[oo],list_not_reapeat_a[oo],list_not_reapeat_ti[oo],list_not_reapeat_u[oo],"TAG")
-    with open("templates/Table2.html","a") as ap:
-        ap.write(f"""
-        {list_not_reapeat_ti[oo]}
-	<img src="{list_not_reapeat_u[oo]}" width="600" height="600">
-	<p><strong>author = {list_not_reapeat_a[oo]}</strong></p>
-	<p><strong>category ={list_not_reapeat_c[oo]}<strong></p>
-	<section>
-      {list_not_reapeat_ta[oo]}
-                    """)
+write_to_html(list_not_reapeat_c,list_not_reapeat_a,list_not_reapeat_ti, ,list_not_reapeat_u, list_not_reapeat_ta)
 
 with open("templates/Table2.html","a") as ap:
     ap.write("</body></html>")
@@ -120,7 +123,7 @@ app=Flask(__name__)
 @app.route('/')
 
 def index():
-    return render_template('Table2.html')
+    return render_template('table2.html')
 
 if __name__ =='__main__': 
     app.run(debug=True)
